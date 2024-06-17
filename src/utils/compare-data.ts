@@ -1,16 +1,16 @@
 import { CompanyPDFData } from "../pdf-service";
 
 const CompanyName = "Company Name";
-interface MismatchesData {
+ interface MismatchesData {
     field: string,
-    extracted: any,
-    stored: any
+    extracted: string | number,
+    stored: string | number | null
 }
 
-interface Summary {
+export interface Summary {
     matched: boolean,
     extractedData: CompanyPDFData,
-    storedData: any,
+    storedData: null | CompanyPDFData,
     mismatches: MismatchesData[]
 }
 

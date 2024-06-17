@@ -2,10 +2,21 @@ import express, { Express, Request, Response } from "express";
 import { PdfService } from "../pdf-service";
 import { fetchSummaryData } from "../utils/fetch-summary-data";
 import { MulterRequest } from "../middlewares/upload";
-
- class UploadController {
-
-    async compareData(req: Request, res: Response){
+/**
+ *
+ *
+ * @class UploadController
+ */
+class UploadController {
+/**
+ *
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @return {*} 
+ * @memberof UploadController
+ */
+async compareData(req: Request, res: Response){
         const multerReq = req as MulterRequest;
         if (!multerReq.file) {
             return res.status(400).send('No file uploaded.');

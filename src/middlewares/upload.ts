@@ -20,8 +20,15 @@ export interface MulterRequest extends Request {
 
 type Callback = (error: Error | null, destination: string) => void;
 class UploadMiddleware {
-
-    fileUpload (req: Request, res: Response, next: NextFunction){
+/**
+ *
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @memberof UploadMiddleware
+ */
+fileUpload (req: Request, res: Response, next: NextFunction){
         const storage = multer.diskStorage({
             destination:  (req: Request, file : MulterFile, callback: Callback ) => {
                 callback(null, path.join(__dirname, '../assets'));

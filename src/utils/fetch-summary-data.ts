@@ -1,19 +1,19 @@
 const fs = require('fs');
 const csv = require('csv-parser');
 import path from "path";
-import { compareData } from "./compare-data";
+import { Summary, compareData } from "./compare-data";
 import { CompanyPDFData } from "../pdf-service";
 
-export const fetchSummaryData = (companyPdfData: CompanyPDFData, csvFilePath: string): Promise<any> => {
+export const fetchSummaryData = (companyPdfData: CompanyPDFData, csvFilePath: string): Promise<Summary> => {
     return new Promise((resolve, reject) => {
-        const csvData: any[] = [];
+        const csvData: CompanyPDFData[] = [];
         fs.createReadStream(path.resolve(__dirname, csvFilePath))
             .pipe(csv())
-            .on('data', (row: any) => {
+            .on('data', (row: CompanyPDFData) => {
                 csvData.push(row);
             })
             .on('end', () => {
-                const result = compareData(companyPdfData as any, csvData);
+                const result = compareData(companyPdfData, csvData);
                 resolve(result);
             })
             .on('error', (error: any) => {
