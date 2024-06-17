@@ -36,6 +36,15 @@ export const compareData = (extractedData: CompanyPDFData, csvData: CompanyPDFDa
               });
           }
       }
+  }else{
+    for (let key in extractedData) {
+            summary.mismatches.push({
+                field: key,
+                extracted: extractedData[key],
+                stored: null
+            });
+        
+    }
   }
 
   return summary;

@@ -5,7 +5,7 @@ import { MulterRequest } from "../middlewares/upload";
 
  class UploadController {
 
-    compareData = async (req: Request, res: Response) => {
+    async compareData(req: Request, res: Response){
         const multerReq = req as MulterRequest;
         if (!multerReq.file) {
             return res.status(400).send('No file uploaded.');
@@ -14,15 +14,17 @@ import { MulterRequest } from "../middlewares/upload";
         try {
             const pdfService = new PdfService("TEST_KEY")
            const companyPdfData = await pdfService.extract(`assets/${multerReq.file.originalname}`)
-
+              
             if (!companyPdfData) {
                 return res.status(400).send({ error: "Cannot extract data. Invalid file provided." })
             }
             const summary = await fetchSummaryData(companyPdfData, '../../data/database.csv');       
-            res.status(201).send(summary)
+            res.status(200).send(summary)
 
         } catch (error) {
-            return res.status(400).send({ error: error || "Cannot extract data. Invalid file provided." })
+            const errorMessage = error instanceof Error ? error.message : "An error occurred.";
+
+            return res.status(400).send({ error: errorMessage })
         }
     }
 

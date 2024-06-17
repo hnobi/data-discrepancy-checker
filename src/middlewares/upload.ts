@@ -21,21 +21,31 @@ export interface MulterRequest extends Request {
 type Callback = (error: Error | null, destination: string) => void;
 class UploadMiddleware {
 
-    fileUpload = (req: Request, res: Response, next: NextFunction) => {
+    fileUpload (req: Request, res: Response, next: NextFunction){
         const storage = multer.diskStorage({
             destination:  (req: Request, file : MulterFile, callback: Callback ) => {
                 callback(null, path.join(__dirname, '../assets'));
             },
             filename: (req: Request, file : MulterFile, callback: Callback ) => {
-                callback(null, file.originalname);
+                if (file.mimetype === 'application/pdf') {
+                    callback(null, file.originalname);
+                  } else {
+                    callback(new Error('Only PDF files are allowed!'), '');
+                  }
+                
             }
           
           })
 
           const upload = multer({ storage});
-          upload.single('file');
-          
-         next()
+         const fileUpload =  upload.single('file');
+
+         fileUpload(req, res, (err: any) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            next();
+        });
     }
 
   
